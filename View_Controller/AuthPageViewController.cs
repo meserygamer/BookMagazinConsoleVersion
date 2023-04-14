@@ -15,7 +15,7 @@ namespace BookMagazinConsoleVersion.ViewController
     public class AuthPageViewController
     {
         /// <summary>
-        /// Делегат основа для события NotifyAboutAuthorization, запускает процесс авторизации
+        /// Делегат основа для события NotifyAboutAuthorization
         /// </summary>
         /// <param name="Login">Логин пользователя</param>
         /// <param name="Password">Пароль пользователя</param>
