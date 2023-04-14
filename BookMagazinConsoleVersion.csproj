@@ -9,10 +9,30 @@
 
   <ItemGroup>
     <None Remove="AuthFile.csv" />
+    <None Remove="Books.csv" />
+    <None Remove="CompositionIncome.csv" />
+    <None Remove="Declaration.csv" />
+    <None Remove="Realize.csv" />
+    <None Remove="Suppliers.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="AuthFile.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Books.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="CompositionIncome.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Declaration.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Realize.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Suppliers.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

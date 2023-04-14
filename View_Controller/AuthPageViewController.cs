@@ -45,7 +45,7 @@ namespace BookMagazinConsoleVersion.ViewController
         /// Метод отрисовывающий приветственный экран после успешной авторизации
         /// </summary>
         /// <param name="UserData">Структура описывающая данные пользователя</param>
-        public static void SuccessfulLogin(User UserData)
+        public static void SuccessfullLogin(User UserData)
         {
             Console.Clear();
             Console.WriteLine($"Добро пожаловать {UserData.Surname} {UserData.Name}!");
@@ -55,6 +55,7 @@ namespace BookMagazinConsoleVersion.ViewController
                 Console.Write(".");
                 Thread.Sleep(1000);
             }
+            Console.Clear();
         }
         /// <summary>
         /// Метод отрисовывающий экран проваленной авторизации

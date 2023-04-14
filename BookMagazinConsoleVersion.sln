@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookMagazinConsoleVersion", "BookMagazinConsoleVersion.csproj", "{849E979F-ABE8-4536-A78F-F1034BE69298}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookMagazinConsoleVersion", "BookMagazinConsoleVersion.csproj", "{849E979F-ABE8-4536-A78F-F1034BE69298}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{E746B0F9-8957-4853-80A3-379B9CD4518F}"
 	ProjectSection(SolutionItems) = preProject
 		AuthFile.csv = AuthFile.csv
+		Books.csv = Books.csv
+		CompositionIncome.csv = CompositionIncome.csv
+		Declaration.csv = Declaration.csv
+		Realize.csv = Realize.csv
+		Suppliers.csv = Suppliers.csv
 	EndProjectSection
 EndProject
 Global

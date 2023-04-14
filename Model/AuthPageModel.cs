@@ -21,7 +21,7 @@ namespace BookMagazinConsoleVersion.Model
         /// <summary>
         /// Событие сообщающее об успешном прохождении авторизации
         /// </summary>
-        static event UserIsLoggedIn NotifyAboutSuccessfulLogin = AuthPageViewController.SuccessfulLogin;
+        static event UserIsLoggedIn NotifyAboutSuccessfullLogin = AuthPageViewController.SuccessfullLogin;
         /// <summary>
         /// Делегат основа для события NotifyAboutFailedLogin
         /// </summary>
@@ -51,7 +51,8 @@ namespace BookMagazinConsoleVersion.Model
                 if(value is not null)
                 {
                     currentUser = value;
-                    NotifyAboutSuccessfulLogin((User)currentUser);
+                    NotifyAboutSuccessfullLogin += ObjectSelectionMenuModel.DefiningObjectsForTheUser;
+                    NotifyAboutSuccessfullLogin((User)currentUser);
                 }
                 else
                 {
