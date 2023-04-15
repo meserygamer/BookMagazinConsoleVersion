@@ -8,6 +8,9 @@ using RegistrationLibrary;
 
 namespace BookMagazinConsoleVersion.Model
 {
+    /// <summary>
+    /// Перечисление описывающее объекты, которые может выбрать пользователь
+    /// </summary>
     public enum ChoseOfUser
     {
         TableOfSuppliers,
@@ -18,11 +21,27 @@ namespace BookMagazinConsoleVersion.Model
         ReportOfBookSales,
         ReportOfIncomePerBook
     }
+    /// <summary>
+    /// Класс описывающий меню выбора объектов (получение данных и алгоритмы обработки)
+    /// </summary>
     static class ObjectSelectionMenuModel
     {
+        /// <summary>
+        /// Делегат основа для NotifyAboutInteractionObjectDefined
+        /// </summary>
         delegate void InteractionObjectDefined();
+        /// <summary>
+        /// Событие сообщающее об определении объекта с которым будет взаимодействовать пользователь
+        /// </summary>
         static event InteractionObjectDefined NotifyAboutInteractionObjectDefined;
-        static Object? CurrentObject;
+        /// <summary>
+        /// Поле содержащее в себе экземпляр объекта с которым взаимодйствует пользователь
+        /// </summary>
+        static object? CurrentObject;
+        /// <summary>
+        /// Метод определяющий вариант меню выбора объекта, который будет отрисован пользователю
+        /// </summary>
+        /// <param name="CurrentUser">Структура User, определящая пользователя</param>
         public static void DefiningObjectsForTheUser(User CurrentUser)
         {
             switch (CurrentUser.RoleInSystem) 
@@ -34,6 +53,10 @@ namespace BookMagazinConsoleVersion.Model
                 case User.Doljenost.None: ObjectSelectionMenuViewController.DrawInterfaceForNone(); break;
             }
         }
+        /// <summary>
+        /// Метод создающий экземпляр объекта для взаимодействия с пользователем
+        /// </summary>
+        /// <param name="ChoseObject"> </param>
         public static void DefiningAnObjectForUserInteraction(ChoseOfUser ChoseObject)
         {
             switch (ChoseObject)

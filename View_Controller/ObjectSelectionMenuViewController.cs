@@ -9,12 +9,32 @@ using Microsoft.VisualBasic;
 
 namespace BookMagazinConsoleVersion.ViewController
 {
+    /// <summary>
+    /// Класс описывающий меню выбора объектов (отрисовка данных пользователю)
+    /// </summary>
     static class ObjectSelectionMenuViewController
     {
+        /// <summary>
+        /// Делегат основа для NotifyAboutUserSelectedObject
+        /// </summary>
+        /// <param name="ChoseObject">Перечисление идентифицирующее объект выбранный пользователем</param>
         delegate void UserSelectedObject(ChoseOfUser ChoseObject);
+        /// <summary>
+        /// Событие сообщающее о том, что пользователь выбрал объект взаимодействия
+        /// </summary>
         static event UserSelectedObject NotifyAboutUserSelectedObject = ObjectSelectionMenuModel.DefiningAnObjectForUserInteraction;
+        /// <summary>
+        /// Делегат основа для NotifyAboutTheMethodOfInteractionIsSelected
+        /// </summary>
+        /// <param name="MethodOfIteraction">Числовой номер идентифицирующий способ взаимодействия пользователя с объектом</param>
         delegate void TheMethodOfInteractionIsSelected(int MethodOfIteraction);
+        /// <summary>
+        /// Событие сообщающее о том, что пользователь выбрал способ взаимодействия с объектом
+        /// </summary>
         static event TheMethodOfInteractionIsSelected NotifyAboutTheMethodOfInteractionIsSelected;
+        /// <summary>
+        /// Отрисовка интерфейса выбора объекта для админа
+        /// </summary>
         public static void DrawInterfaceForAdmin()
         {
             Console.WriteLine("Выберите объект, с которым желаете взаимодейтсвовать:");
@@ -38,6 +58,9 @@ namespace BookMagazinConsoleVersion.ViewController
                 default: Console.Clear(); Console.WriteLine("Неправильный выбор объекта, повторите попытку"); DrawInterfaceForAdmin();break;
             }
         }
+        /// <summary>
+        /// Отрисовка интерфейса выбора объекта для продавца
+        /// </summary>
         public static void DrawInterfaceForSalesman()
         {
             Console.WriteLine("1)Таблица книг");
@@ -52,6 +75,9 @@ namespace BookMagazinConsoleVersion.ViewController
                 default: Console.Clear(); Console.WriteLine("Неправильный выбор объекта, повторите попытку"); DrawInterfaceForSalesman(); break;
             }
         }
+        /// <summary>
+        /// Отрисовка интерфейса выбора объекта для работника склада
+        /// </summary>
         public static void DrawInterfaceForWarehouse_Worker()
         {
             Console.WriteLine("1)Таблица поставщиков");
@@ -66,6 +92,9 @@ namespace BookMagazinConsoleVersion.ViewController
                 default: Console.Clear(); Console.WriteLine("Неправильный выбор объекта, повторите попытку"); DrawInterfaceForWarehouse_Worker(); break;
             }
         }
+        /// <summary>
+        /// Отрисовка интерфейса выбора объекта для бухгалтера
+        /// </summary>
         public static void DrawInterfaceForAccountant()
         {
             Console.WriteLine("1)Отчет о продажах книг");
@@ -78,10 +107,16 @@ namespace BookMagazinConsoleVersion.ViewController
                 default: Console.Clear(); Console.WriteLine("Неправильный выбор объекта, повторите попытку"); DrawInterfaceForAccountant(); break;
             }
         }
+        /// <summary>
+        /// Отрисовка интерфейса выбора объекта для неизвестного пользователя
+        /// </summary>
         public static void DrawInterfaceForNone()
         {
             Console.WriteLine("Обратитесь к администратору за помощью, ваша роль в системе не распознана");
         }
+        /// <summary>
+        /// Отрисовка меню взаимодействия с таблицей
+        /// </summary>
         public static void DrawMenuOfChoseInteractionWithTable()
         {
             Console.Clear();
@@ -92,6 +127,7 @@ namespace BookMagazinConsoleVersion.ViewController
             int choseIteraction = int.Parse(Console.ReadLine());
             if(choseIteraction >= 1 && choseIteraction <= 3)
             {
+                NotifyAboutTheMethodOfInteractionIsSelected -= ObjectSelectionMenuModel.InteractionWithTable;
                 NotifyAboutTheMethodOfInteractionIsSelected += ObjectSelectionMenuModel.InteractionWithTable;
                 NotifyAboutTheMethodOfInteractionIsSelected(choseIteraction);
             }
@@ -100,6 +136,9 @@ namespace BookMagazinConsoleVersion.ViewController
                 DrawMenuOfChoseInteractionWithTable();
             }
         }
+        /// <summary>
+        /// Отрисовка меню взаимодействия с отчетом
+        /// </summary>
         public static void DrawMenuOfChoseInteractionWithReport()
         {
             Console.Clear();
@@ -108,6 +147,7 @@ namespace BookMagazinConsoleVersion.ViewController
             int choseIteraction = int.Parse(Console.ReadLine());
             if (choseIteraction >= 1 && choseIteraction <= 1)
             {
+                NotifyAboutTheMethodOfInteractionIsSelected -= ObjectSelectionMenuModel.InteractionWithReport;
                 NotifyAboutTheMethodOfInteractionIsSelected += ObjectSelectionMenuModel.InteractionWithReport;
                 NotifyAboutTheMethodOfInteractionIsSelected(choseIteraction);
             }
