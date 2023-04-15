@@ -27,11 +27,11 @@ namespace BookMagazinConsoleVersion.ViewController
         /// Делегат основа для NotifyAboutTheMethodOfInteractionIsSelected
         /// </summary>
         /// <param name="MethodOfIteraction">Числовой номер идентифицирующий способ взаимодействия пользователя с объектом</param>
-        delegate void TheMethodOfInteractionIsSelected(int MethodOfIteraction);
+        delegate void TheMethodOfInteractionIsSelected(ChoseOfInteraction MethodOfIteraction);
         /// <summary>
         /// Событие сообщающее о том, что пользователь выбрал способ взаимодействия с объектом
         /// </summary>
-        static event TheMethodOfInteractionIsSelected NotifyAboutTheMethodOfInteractionIsSelected;
+        static event TheMethodOfInteractionIsSelected NotifyAboutTheMethodOfInteractionIsSelected = ObjectSelectionMenuModel.NextPage;
         /// <summary>
         /// Отрисовка интерфейса выбора объекта для админа
         /// </summary>
@@ -125,15 +125,12 @@ namespace BookMagazinConsoleVersion.ViewController
             Console.WriteLine("2) Удалить запись из таблицы");
             Console.WriteLine("3) Добавить запись в таблицу");
             int choseIteraction = int.Parse(Console.ReadLine());
-            if(choseIteraction >= 1 && choseIteraction <= 3)
+            switch (choseIteraction)
             {
-                NotifyAboutTheMethodOfInteractionIsSelected -= ObjectSelectionMenuModel.InteractionWithTable;
-                NotifyAboutTheMethodOfInteractionIsSelected += ObjectSelectionMenuModel.InteractionWithTable;
-                NotifyAboutTheMethodOfInteractionIsSelected(choseIteraction);
-            }
-            else
-            {
-                DrawMenuOfChoseInteractionWithTable();
+                case 1: NotifyAboutTheMethodOfInteractionIsSelected?.Invoke(ChoseOfInteraction.ShowAllData); break;
+                case 2: NotifyAboutTheMethodOfInteractionIsSelected?.Invoke(ChoseOfInteraction.DeleteDataFromFile); break;
+                case 3: NotifyAboutTheMethodOfInteractionIsSelected?.Invoke(ChoseOfInteraction.AddDataInfile); break;
+                default: DrawMenuOfChoseInteractionWithTable(); break;
             }
         }
         /// <summary>
@@ -145,15 +142,10 @@ namespace BookMagazinConsoleVersion.ViewController
             Console.WriteLine("Выберите функцию для взаимодействия с отчетом:");
             Console.WriteLine("1) Сформировать отчет");
             int choseIteraction = int.Parse(Console.ReadLine());
-            if (choseIteraction >= 1 && choseIteraction <= 1)
+            switch (choseIteraction)
             {
-                NotifyAboutTheMethodOfInteractionIsSelected -= ObjectSelectionMenuModel.InteractionWithReport;
-                NotifyAboutTheMethodOfInteractionIsSelected += ObjectSelectionMenuModel.InteractionWithReport;
-                NotifyAboutTheMethodOfInteractionIsSelected(choseIteraction);
-            }
-            else
-            {
-                DrawMenuOfChoseInteractionWithReport();
+                case 1: NotifyAboutTheMethodOfInteractionIsSelected?.Invoke(ChoseOfInteraction.FormReport); break;
+                default : DrawMenuOfChoseInteractionWithReport(); break;
             }
         }
     }

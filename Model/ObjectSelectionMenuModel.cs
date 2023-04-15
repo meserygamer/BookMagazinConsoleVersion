@@ -21,6 +21,13 @@ namespace BookMagazinConsoleVersion.Model
         ReportOfBookSales,
         ReportOfIncomePerBook
     }
+    public enum ChoseOfInteraction
+    {
+        ShowAllData,
+        DeleteDataFromFile,
+        AddDataInfile,
+        FormReport
+    }
     /// <summary>
     /// Класс описывающий меню выбора объектов (получение данных и алгоритмы обработки)
     /// </summary>
@@ -37,7 +44,9 @@ namespace BookMagazinConsoleVersion.Model
         /// <summary>
         /// Поле содержащее в себе экземпляр объекта с которым взаимодйствует пользователь
         /// </summary>
-        static object? CurrentObject;
+        static object CurrentObject = new object();
+        delegate void EndOfChose(object ObjectForInteraction, ChoseOfInteraction IdIteraction);
+        static event EndOfChose NotifyAboutChoseIsOver;
         /// <summary>
         /// Метод определяющий вариант меню выбора объекта, который будет отрисован пользователю
         /// </summary>
@@ -73,19 +82,12 @@ namespace BookMagazinConsoleVersion.Model
             {
                 NotifyAboutInteractionObjectDefined += ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithTable;
             }
-            else
+            if (CurrentObject is Objects.Report)
             {
                 NotifyAboutInteractionObjectDefined += ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithReport;
             }
             NotifyAboutInteractionObjectDefined?.Invoke();
         }
-        public static void InteractionWithTable(int MethodOfInteraction)
-        {
-
-        }
-        public static void InteractionWithReport(int MethodOfInteraction)
-        {
-
-        }
+        public static void NextPage(ChoseOfInteraction ChoseIteraction) => NotifyAboutChoseIsOver(CurrentObject, ChoseIteraction);
     }
 }

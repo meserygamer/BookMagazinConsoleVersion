@@ -9,6 +9,23 @@ namespace BookMagazinConsoleVersion.Objects
     abstract class Table
     {
         protected string PathToFile;
+        public virtual List<string[]> ShowAllFromTable()
+        {
+            using (StreamReader file = new StreamReader(PathToFile))
+            {
+                List<string[]> result = new List<string[]>();
+                while (!file.EndOfStream)
+                {
+                    string? CurrentStringFromFile = file.ReadLine();
+                    if (CurrentStringFromFile is not null) result.Add(CurrentStringFromFile.Split(" "));
+                }
+                return result;
+            }
+        }
+    }
+    abstract class Report
+    {
+
     }
     class TableOfSuppliers : Table
     {
@@ -45,11 +62,11 @@ namespace BookMagazinConsoleVersion.Objects
             PathToFile = "Realize.csv";
         }
     }
-    class ReportOfBookSales
+    class ReportOfBookSales : Report
     {
 
     }
-    class ReportOfIncomePerBook
+    class ReportOfIncomePerBook : Report
     {
 
     }
