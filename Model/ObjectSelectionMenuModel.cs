@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BookMagazinConsoleVersion.Objects;
 using BookMagazinConsoleVersion.ViewController;
 using RegistrationLibrary;
 
@@ -44,9 +45,9 @@ namespace BookMagazinConsoleVersion.Model
         /// <summary>
         /// Поле содержащее в себе экземпляр объекта с которым взаимодйствует пользователь
         /// </summary>
-        static object CurrentObject = new object();
-        delegate void EndOfChose(object ObjectForInteraction, ChoseOfInteraction IdIteraction);
-        static event EndOfChose NotifyAboutChoseIsOver;
+        static ObjectOfSystem CurrentObject;
+        delegate void EndOfChose(ObjectOfSystem ObjectForInteraction, ChoseOfInteraction IdIteraction);
+        static event EndOfChose NotifyAboutChoseIsOver = IteractionWithObjectModel.IdentifyObjectAndMethodOfWorkingWith;
         /// <summary>
         /// Метод определяющий вариант меню выбора объекта, который будет отрисован пользователю
         /// </summary>
