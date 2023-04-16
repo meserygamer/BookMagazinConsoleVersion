@@ -10,7 +10,9 @@ namespace BookMagazinConsoleVersion.ViewController
 {
     static class IteractionWithObjectViewController
     {
-        delegate void AddDataDelegate(int NumberOfRecord);
+        delegate void DelDataDelegate(int NumberOfRecord);
+        static event DelDataDelegate NotifyAboutDelData;
+        delegate void AddDataDelegate();
         static event AddDataDelegate NotifyAboutAddData;
         public static void ShowAllDataFromTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
         {
@@ -22,15 +24,16 @@ namespace BookMagazinConsoleVersion.ViewController
                 Shower.DrawDataPartTable();
             }
         }
-        public static void AddDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
+        public static void DelDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
         {
             Console.Clear();
+            NotifyAboutDelData += ((Table)ChoseTable).DelDataInTable;
             if (ChoseTable is not null)
             {
                 ShowAllDataFromTable(DataFromTable, ChoseTable);
                 Console.WriteLine("\n\nВведите номер записи, которую желаете удалить:");
                 int NumberOfRecord = -1;
-                while(NumberOfRecord < 1 && NumberOfRecord > DataFromTable.Count)
+                while(NumberOfRecord < 1 || NumberOfRecord > DataFromTable.Count)
                 {
                     NumberOfRecord = Convert.ToInt32(Console.ReadLine());
                     if(NumberOfRecord < 1 && NumberOfRecord > DataFromTable.Count)
@@ -38,7 +41,20 @@ namespace BookMagazinConsoleVersion.ViewController
                         Console.WriteLine("Запись с таким номером отсутствует, повторите ввод:");
                     }
                 }
-                NotifyAboutAddData?.Invoke(NumberOfRecord);
+                NotifyAboutDelData?.Invoke(NumberOfRecord);
+                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable);
+            }
+        }
+        public static void AddDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
+        {
+            Console.Clear();
+            NotifyAboutAddData += ((Table)ChoseTable).AddDataInTable;
+            if (ChoseTable is not null)
+            {
+                ShowAllDataFromTable(DataFromTable, ChoseTable);
+                NotifyAboutAddData?.Invoke();
+                Console.Clear();
+                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable);
             }
         }
     }

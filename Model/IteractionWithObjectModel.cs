@@ -12,7 +12,8 @@ namespace BookMagazinConsoleVersion.Model
     {
         delegate void ExtractingDataFromATable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable);
         static event ExtractingDataFromATable NotifyAboutTheDataHasBeenCured = IteractionWithObjectViewController.ShowAllDataFromTable;
-        static event ExtractingDataFromATable AddingDataInTable = IteractionWithObjectViewController.AddDataInTable;
+        static event ExtractingDataFromATable NotifyAboutDeletingDataInTable = IteractionWithObjectViewController.DelDataInTable;
+        static event ExtractingDataFromATable NotifyAboutAddingDataInTable = IteractionWithObjectViewController.AddDataInTable;
         static public void IdentifyObjectAndMethodOfWorkingWith(ObjectOfSystem CurrentObject, ChoseOfInteraction MethodOfWorkWith)
         {
             if (CurrentObject is Objects.Table)
@@ -35,10 +36,12 @@ namespace BookMagazinConsoleVersion.Model
                     }
                 case ChoseOfInteraction.AddDataInfile:
                     {
+                        NotifyAboutAddingDataInTable(TableforWork.ShowAllFromTable(), TableforWork);
                         break;
                     }
                 case ChoseOfInteraction.DeleteDataFromFile:
                     {
+                        NotifyAboutDeletingDataInTable(TableforWork.ShowAllFromTable(), TableforWork);
                         break;
                     }
             }
@@ -53,7 +56,6 @@ namespace BookMagazinConsoleVersion.Model
                     }
             }
         }
-
         //private static ChoseOfUser? ReturnTypeOfObjectOfSystem(ObjectOfSystem CurrentObject)
         //{
         //    switch (CurrentObject.GetType().Name)
