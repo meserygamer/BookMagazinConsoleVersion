@@ -51,7 +51,25 @@ namespace BookMagazinConsoleVersion.Objects
     }
     abstract class Report : ObjectOfSystem
     {
-        public abstract void FormReport();
+        public abstract List<string[]> FormReport();
+        public virtual void Export()
+        {
+            using (StreamWriter file = new StreamWriter(File.Open($"{NameOfReport}.csv", FileMode.Create)))
+            {
+                List<string[]> DatafromReport = new List<string[]>(FormReport());
+                foreach (var dataString in DatafromReport)
+                {
+                    string exportString = "";
+                    for (int i = 0; i < KolStlb; i++)
+                    {
+                        exportString += dataString[i] + ";";
+                    }
+                    exportString = exportString[0..(exportString.Length - 1)];
+                    file.WriteLine(exportString);
+                }
+            }
+        }
+        public string NameOfReport;
     }
     class TableOfSuppliers : Table
     {
@@ -287,23 +305,36 @@ namespace BookMagazinConsoleVersion.Objects
             TablePart = new string[] { "Номер книги", "Название книги"
             , "Количество продаж" };
             KolStlb = 3;
+            NameOfReport = "ReportOfBookSales";
         }
-        public override void FormReport()
+        public override List<string[]> FormReport()
         {
             List<TableOfBooks.RecordTableOfBooks> DataFromBookTable = new List<TableOfBooks.RecordTableOfBooks>();
             foreach (var i in (new TableOfBooks()).ShowAllFromTable()) DataFromBookTable.Add(new TableOfBooks.RecordTableOfBooks(i));
             List<TableOfRealization.RecordTableOfRealization> DataFromRealizationTable = new List<TableOfRealization.RecordTableOfRealization>();
             foreach (var i in (new TableOfRealization()).ShowAllFromTable()) DataFromRealizationTable.Add(new TableOfRealization.RecordTableOfRealization(i));
+            var Group = from t1 in DataFromRealizationTable
+                        group t1.Kol by t1.NumberObBook into t2
+                        select new
+                        {
+                            ID_Book = t2.Key,
+                            SumOFRealize = t2.Sum()
+                        };
             var CrossJoin = from t1 in DataFromBookTable
-                            from t2 in DataFromRealizationTable
-                            where t1.NumberObBook == t2.NumberObBook
+                            from t2 in Group
+                            where t1.NumberObBook == t2.ID_Book
                             select new
                             {
                                 NumberOfBook = t1.NumberObBook,
                                 NameOfBook = t1.NameOfBook,
-                                Kol = t2.Kol
+                                Kol = t2.SumOFRealize
                             };
-            /////////
+            List<string[]> stringOfReport = new List<string[]>();
+            foreach (var i in CrossJoin)
+            {
+                stringOfReport.Add(new string[] {Convert.ToString(i.NumberOfBook), i.NameOfBook, Convert.ToString(i.Kol)});
+            }
+            return stringOfReport;
         }
     }
     class ReportOfIncomePerBook : Report
@@ -313,10 +344,36 @@ namespace BookMagazinConsoleVersion.Objects
             TablePart = new string[] { "Номер книги", "Название книги"
             , "Прибыль от продаж" };
             KolStlb = 3;
+            NameOfReport = "ReportOfIncomePerBook";
         }
-        public override void FormReport()
+        public override List<string[]> FormReport()
         {
-            
+            List<TableOfBooks.RecordTableOfBooks> DataFromBookTable = new List<TableOfBooks.RecordTableOfBooks>();
+            foreach (var i in (new TableOfBooks()).ShowAllFromTable()) DataFromBookTable.Add(new TableOfBooks.RecordTableOfBooks(i));
+            List<TableOfRealization.RecordTableOfRealization> DataFromRealizationTable = new List<TableOfRealization.RecordTableOfRealization>();
+            foreach (var i in (new TableOfRealization()).ShowAllFromTable()) DataFromRealizationTable.Add(new TableOfRealization.RecordTableOfRealization(i));
+            var Group = from t1 in DataFromRealizationTable
+                        group t1.cost by t1.NumberObBook into t2
+                        select new
+                        {
+                            ID_Book = t2.Key,
+                            SumOFRealize = t2.Sum()
+                        };
+            var CrossJoin = from t1 in DataFromBookTable
+                            from t2 in Group
+                            where t1.NumberObBook == t2.ID_Book
+                            select new
+                            {
+                                NumberOfBook = t1.NumberObBook,
+                                NameOfBook = t1.NameOfBook,
+                                SumCost = t2.SumOFRealize
+                            };
+            List<string[]> stringOfReport = new List<string[]>();
+            foreach (var i in CrossJoin)
+            {
+                stringOfReport.Add(new string[] { Convert.ToString(i.NumberOfBook), i.NameOfBook, Convert.ToString(i.SumCost)});
+            }
+            return stringOfReport;
         }
     }
 }

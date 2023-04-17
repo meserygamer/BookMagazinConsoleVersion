@@ -52,10 +52,12 @@ namespace BookMagazinConsoleVersion.Model
             {
                 case ChoseOfInteraction.FormReport:
                     {
+                        NotifyAboutTheDataHasBeenCured(TableforWork.FormReport(), TableforWork);
                         break;
                     }
             }
         }
+        public static void ExportReport(Report ReportForExport) => ReportForExport.Export();
         //private static ChoseOfUser? ReturnTypeOfObjectOfSystem(ObjectOfSystem CurrentObject)
         //{
         //    switch (CurrentObject.GetType().Name)

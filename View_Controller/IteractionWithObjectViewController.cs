@@ -14,6 +14,8 @@ namespace BookMagazinConsoleVersion.ViewController
         static event DelDataDelegate NotifyAboutDelData;
         delegate void AddDataDelegate();
         static event AddDataDelegate NotifyAboutAddData;
+        delegate void ExportReport(Report ReportForExport);
+        static event ExportReport NotifyAboutExportingReport = IteractionWithObjectModel.ExportReport;
         public static void ShowAllDataFromTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
         {
             Console.Clear();
@@ -22,6 +24,10 @@ namespace BookMagazinConsoleVersion.ViewController
                 ShowDataFromTable Shower = new ShowDataFromTable(DataFromTable, ChoseTable);
                 Shower.DrawTablePart();
                 Shower.DrawDataPartTable();
+                if(ChoseTable is Report)
+                {
+                    ScreenOfExtractingReport(DataFromTable, (Report)ChoseTable);
+                }
             }
         }
         public static void DelDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
@@ -55,6 +61,29 @@ namespace BookMagazinConsoleVersion.ViewController
                 NotifyAboutAddData?.Invoke();
                 Console.Clear();
                 ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable);
+            }
+        }
+        public static void ScreenOfExtractingReport(List<string[]> DataFromTable, Report ChoseReport)
+        {
+            string? userAnswer = null;
+            while(userAnswer is null)
+            {
+                Console.WriteLine("Желаете экспортировать отчет? (Да\\Нет)");
+                userAnswer = Console.ReadLine();
+                if (userAnswer is not null &&
+                    (userAnswer.ToLower() == "да" || userAnswer.ToLower() == "д" || userAnswer.ToLower() == "yes"))
+                {
+                    NotifyAboutExportingReport(ChoseReport);
+                }
+                else if(userAnswer is not null &&
+                    (userAnswer.ToLower() == "нет" || userAnswer.ToLower() == "н" || userAnswer.ToLower() == "no"))
+                {
+
+                }
+                else
+                {
+                    userAnswer = null;
+                }
             }
         }
     }
