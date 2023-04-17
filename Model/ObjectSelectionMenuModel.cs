@@ -48,12 +48,14 @@ namespace BookMagazinConsoleVersion.Model
         static ObjectOfSystem CurrentObject;
         delegate void EndOfChose(ObjectOfSystem ObjectForInteraction, ChoseOfInteraction IdIteraction);
         static event EndOfChose NotifyAboutChoseIsOver = IteractionWithObjectModel.IdentifyObjectAndMethodOfWorkingWith;
+        public static User CurrentUser {get; private set;}
         /// <summary>
         /// Метод определяющий вариант меню выбора объекта, который будет отрисован пользователю
         /// </summary>
         /// <param name="CurrentUser">Структура User, определящая пользователя</param>
         public static void DefiningObjectsForTheUser(User CurrentUser)
         {
+            ObjectSelectionMenuModel.CurrentUser = CurrentUser;
             switch (CurrentUser.RoleInSystem) 
             {
                 case User.Doljenost.Administrator: ObjectSelectionMenuViewController.DrawInterfaceForAdmin(); break;
@@ -81,10 +83,14 @@ namespace BookMagazinConsoleVersion.Model
             }
             if (CurrentObject is Objects.Table)
             {
+                NotifyAboutInteractionObjectDefined -= ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithTable;
+                NotifyAboutInteractionObjectDefined -= ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithReport;
                 NotifyAboutInteractionObjectDefined += ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithTable;
             }
             if (CurrentObject is Objects.Report)
             {
+                NotifyAboutInteractionObjectDefined -= ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithTable;
+                NotifyAboutInteractionObjectDefined -= ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithReport;
                 NotifyAboutInteractionObjectDefined += ObjectSelectionMenuViewController.DrawMenuOfChoseInteractionWithReport;
             }
             NotifyAboutInteractionObjectDefined?.Invoke();

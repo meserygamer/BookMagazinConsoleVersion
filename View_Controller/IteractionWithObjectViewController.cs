@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BookMagazinConsoleVersion.Model;
 using BookMagazinConsoleVersion.Objects;
+using RegistrationLibrary;
 
 namespace BookMagazinConsoleVersion.ViewController
 {
@@ -16,7 +17,16 @@ namespace BookMagazinConsoleVersion.ViewController
         static event AddDataDelegate NotifyAboutAddData;
         delegate void ExportReport(Report ReportForExport);
         static event ExportReport NotifyAboutExportingReport = IteractionWithObjectModel.ExportReport;
-        public static void ShowAllDataFromTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
+        delegate void ReturnOnSelectionObjectPage(User userData);
+        static event ReturnOnSelectionObjectPage NotifyAboutReturnOnSelectionObjectPage = ObjectSelectionMenuModel.DefiningObjectsForTheUser;
+        public enum ModeOfUseShowDataFromtable
+        {
+            FromOtherMethod,
+            AloneMethod
+        }
+        public static void ShowAllDataFromTable(List<string[]> DataFromTable,
+            ObjectOfSystem ChoseTable,
+            ModeOfUseShowDataFromtable ModeOfUsing = ModeOfUseShowDataFromtable.AloneMethod)
         {
             Console.Clear();
             if(ChoseTable is not null)
@@ -29,6 +39,10 @@ namespace BookMagazinConsoleVersion.ViewController
                     ScreenOfExtractingReport(DataFromTable, (Report)ChoseTable);
                 }
             }
+            if (ModeOfUsing == ModeOfUseShowDataFromtable.AloneMethod)
+            {
+                ReturnOnObjectSelectionMenu();
+            }
         }
         public static void DelDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
         {
@@ -36,7 +50,7 @@ namespace BookMagazinConsoleVersion.ViewController
             NotifyAboutDelData += ((Table)ChoseTable).DelDataInTable;
             if (ChoseTable is not null)
             {
-                ShowAllDataFromTable(DataFromTable, ChoseTable);
+                ShowAllDataFromTable(DataFromTable, ChoseTable, ModeOfUseShowDataFromtable.FromOtherMethod);
                 Console.WriteLine("\n\nВведите номер записи, которую желаете удалить:");
                 int NumberOfRecord = -1;
                 while(NumberOfRecord < 1 || NumberOfRecord > DataFromTable.Count)
@@ -48,7 +62,8 @@ namespace BookMagazinConsoleVersion.ViewController
                     }
                 }
                 NotifyAboutDelData?.Invoke(NumberOfRecord);
-                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable);
+                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable, ModeOfUseShowDataFromtable.FromOtherMethod);
+                ReturnOnObjectSelectionMenu();
             }
         }
         public static void AddDataInTable(List<string[]> DataFromTable, ObjectOfSystem ChoseTable)
@@ -57,10 +72,11 @@ namespace BookMagazinConsoleVersion.ViewController
             NotifyAboutAddData += ((Table)ChoseTable).AddDataInTable;
             if (ChoseTable is not null)
             {
-                ShowAllDataFromTable(DataFromTable, ChoseTable);
+                ShowAllDataFromTable(DataFromTable, ChoseTable, ModeOfUseShowDataFromtable.FromOtherMethod);
                 NotifyAboutAddData?.Invoke();
                 Console.Clear();
-                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable);
+                ShowAllDataFromTable(((Table)ChoseTable).ShowAllFromTable(), ChoseTable, ModeOfUseShowDataFromtable.FromOtherMethod);
+                ReturnOnObjectSelectionMenu();
             }
         }
         public static void ScreenOfExtractingReport(List<string[]> DataFromTable, Report ChoseReport)
@@ -78,13 +94,28 @@ namespace BookMagazinConsoleVersion.ViewController
                 else if(userAnswer is not null &&
                     (userAnswer.ToLower() == "нет" || userAnswer.ToLower() == "н" || userAnswer.ToLower() == "no"))
                 {
-
+                    ReturnOnObjectSelectionMenu();
                 }
                 else
                 {
                     userAnswer = null;
                 }
             }
+        }
+        public static void ReturnOnObjectSelectionMenu()
+        {
+            Console.WriteLine("\n\nДля возврата на страницу выбора объекта нажмите на кнопку q");
+            bool flagOfExit = true;
+            while(flagOfExit)
+            {
+                ConsoleKeyInfo KeyButton = Console.ReadKey();
+                if(KeyButton.Key.ToString() == "q" || KeyButton.Key.ToString() == "Q")
+                {
+                    flagOfExit = false;
+                }
+            }
+            Console.Clear();
+            NotifyAboutReturnOnSelectionObjectPage(ObjectSelectionMenuModel.CurrentUser);
         }
     }
     class ShowDataFromTable

@@ -52,9 +52,10 @@ namespace BookMagazinConsoleVersion.Objects
     abstract class Report : ObjectOfSystem
     {
         public abstract List<string[]> FormReport();
+        public string NameOfReport;
         public virtual void Export()
         {
-            using (StreamWriter file = new StreamWriter(File.Open($"{NameOfReport}.csv", FileMode.Create)))
+            using (StreamWriter file = new StreamWriter(File.Open($"{NameOfReport}.csv", FileMode.Create),Encoding.UTF8))
             {
                 List<string[]> DatafromReport = new List<string[]>(FormReport());
                 foreach (var dataString in DatafromReport)
@@ -69,7 +70,6 @@ namespace BookMagazinConsoleVersion.Objects
                 }
             }
         }
-        public string NameOfReport;
     }
     class TableOfSuppliers : Table
     {
