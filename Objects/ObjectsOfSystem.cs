@@ -226,7 +226,7 @@ namespace BookMagazinConsoleVersion.Objects
             Console.WriteLine("Введите год издания:");
             Record += "" + Convert.ToInt32(Console.ReadLine()) + ";";
             Console.WriteLine("Введите место издания:");
-            Record += "" + Convert.ToInt32(Console.ReadLine()) + ";";
+            Record += "" + Console.ReadLine() + ";";
             Console.WriteLine("Введите количество страниц:");
             Record += "" + Convert.ToInt32(Console.ReadLine()) + ";";
             Console.WriteLine("Введите цену:");
